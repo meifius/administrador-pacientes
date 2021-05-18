@@ -1,1 +1,1 @@
-# administrador-pacientes
+# administrador-paciente

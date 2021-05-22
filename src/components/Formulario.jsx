@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import {v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 
-const Formulario = ( ) => {
+const Formulario = ( { setCitas } ) => {
 
-  const [cita, setCita] = useState({
+  const citaInicial = {
     mascota: '',
     propietario: '',
     fecha: '',
     hora: '',
     sintomas: '',
-  });
+  };
+
+  const [cita, setCita] = useState( citaInicial );
 
   const [error, setError] = useState( false );
 
@@ -18,7 +22,7 @@ const Formulario = ( ) => {
     setCita( cita =>  ( {...cita, [ e.target.name ]: e.target.value } ) );
   };
 
-  const submitHandle = ( e ) => {
+  const submitHandle = async ( e ) => {
     e.preventDefault();
     console.log('Procesando formulario');
     
@@ -34,6 +38,20 @@ const Formulario = ( ) => {
       setError( true );
       return;
     }
+
+    // Modificar mensaje error
+    setError( false );
+
+    // Asignar ID
+    const citaLista = {
+      ...cita,
+      id: uuidv4()
+    }
+    // Crear cita
+    setCitas( citaLista );
+
+    // Reiniciar el Formulario
+    setCita( citaInicial );
   };
 
   return (
@@ -103,6 +121,10 @@ const Formulario = ( ) => {
       </form>
     </>
   )
+}
+
+Formulario.propTypes = {
+  crearCita: PropTypes.func.isRequired,
 }
 
 export default Formulario;
